@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="app.js"></script>    
-    <script src="style.css"></script>
-    <title>PONG in 2021</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="style.css">
+  <title>Let's Play Pong</title>
 </head>
+
 <body>
-<canvas id="pongback" width="800" height="600"></canvas>
-
-
-<script src="app.js"></script>    
+  <div id="board">
+      <div id='ballFx'>
+          <div id="ball"></div>
+      </div>
+      <div id="paddle1" class="paddle"></div>
+      <div id="paddle2" class="paddle"></div>
+      <h1 id="player1_score">0</h1>
+      <h1 id="player2_score">0</h1>
+      <h1 id="message">
+          Press Enter to Play</h1>
+  </div>
+    
+  <script src="app.js"></script>
 </body>
 </html>
