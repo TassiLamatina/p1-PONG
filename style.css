@@ -14,11 +14,21 @@ body {
 }
 
 #board {
-  height: 85vh;
-  width: 80vw;
+  height: 90vh;
+  width: 85vw;
   background-color: black;
-  border-radius: 14px;
+  border-radius: 20px;
 }
+
+#message {
+  position: center;
+  color: white;
+  height: 10vh;
+  width: 30vw;
+  color: white;
+  left: 30vw;
+  margin: 30px auto auto auto;
+} 
 
 #ball {
   height: 30px;
@@ -29,7 +39,7 @@ body {
   left: calc(50% - 15px);
 
 } 
-
+/* spinny ball from: https://www.geeksforgeeks.org/spinning-ball-animation-with-glow-effect-using-css/*/
 #ballFx {
   height: 30px;
   width: 30px;
@@ -50,7 +60,6 @@ body {
 
 @keyframes spinBall {
   100% {
-      -webkit-transform: rotate(360deg);
       transform: rotate(360deg);
   }
 }
@@ -61,7 +70,7 @@ body {
   position: fixed;
   background-color: white;
 }
-
+/* paddles styling glooowwww from: https://codersblock.com/blog/creating-glow-effects-with-css/ */
 #paddle1 {
   top: calc(7.5vh + 55px);
   left: calc(10vw + 30px);
@@ -80,6 +89,7 @@ body {
       0 0 14px white, -4px 0 18px 
 }
 
+/* player scores styling simple css */
 #player1_score {
   height: 70px;
   width: 70px;
@@ -100,12 +110,3 @@ body {
   font-size: 48px;
 }
 
-#message {
-  position: fixed;
-  color: #48426d;
-  height: 10vh;
-  width: 30vw;
-  color: white;
-  left: 38vw;
-  margin: 30px auto auto auto;
-} 
