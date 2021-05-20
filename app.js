@@ -31,10 +31,16 @@ let yg = Math.floor(Math.random() * 3);
 //https://developer.mozilla.org/en-US/docs/Web/API/Document/keydown_event
 //https://teamtreehouse.com/community/dont-understand-the-meaning-of-functione
 //
-// Sounds for the strecth
-let hit = new Audio();
-let wall = new Audio();
-let 
+                // Sounds for the STRETCH
+                // let hit = new Audio();
+                // let wall = new Audio();
+                // let userScore = new Audio();
+                // let comScore = new Audio();
+
+                // hit.src = "hit.wav";
+                // wall.src = "wall.wav";
+                // userScore.src = "userscore.wav";
+                // comScore.src = "compscore.wav";
 
 
 
