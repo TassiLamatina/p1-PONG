@@ -5,7 +5,6 @@ let gameLoopInterval = setInterval(gameLoop, 60);
 let scorePlayer1 = 0;
 let scoreComputer = 0;
 
-//start game button
 
 
 
