@@ -6,8 +6,6 @@ let scorePlayer1 = 0;
 let scoreComputer = 0;
 
 
-
-
 //rectangle paddles
 function drawRect(x, y, w, h, color) {
       ctx.fillStyle = color;
