@@ -185,34 +185,35 @@ function collisionDetection() {
 // animate paddles with keyboard
 //arrowmove
 function arrowmove (event) {
-      console.log(event.keyCode)
+      // console.log(event.keyCode)
       if(event.keyCode == 40) {
-            console.log(player1.y)
             if(player1.y >= 510) {
-              // console.log("bottom hit")
               player1.y = player1.y
-              // event.disabled = true
             } else {
             player1.y = player1.y +20
       } 
     }
       if(event.keyCode == 38) {
-        // console.log(player1.y)
         if(player1.y <= 0) {
-          // console.log("top hit")
-          
           player1.y = player1.y
-        } else { 
-        player1.y = player1.y -20
+            } else { 
+            player1.y = player1.y -20
       }
     }
 
       if(event.keyCode == 83) {
-            // console.log('keydown')
+            if(computer.y >= 510) {
+            computer.y = computer.y
+            } else {
             computer.y = computer.y +20
-      } 
+      }
+      }
       if(event.keyCode == 87) {
-            computer.y = computer.y -20
+           if(computer.y <= 0) {
+            computer.y = computer.y
+           } else {
+                 computer.y = computer.y -20
+           }
       }
       
       
