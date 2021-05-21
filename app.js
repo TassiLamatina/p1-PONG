@@ -1,155 +1,175 @@
-//identify elements
-let gameState = 'start';
-let paddle1 = document.getElementById('paddle1');
-let paddle2 = document.getElementById('paddle2');
-let board = document.getElementById('board');
-let initial_ball = document.getElementById('ball');
-let ball = document.getElementById('ball');
-    // console.log("ball", ball)
-let score1 = document.getElementById('player1_score');
-let score2 = document.getElementById('player2_score');
-let message = document.getElementById('message');
-    // console.log(paddle1)
-//provides info about size of element and position relative to viewport: https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
-let paddle1_coord = paddle1.getBoundingClientRect();
-let paddle2_coord = paddle2.getBoundingClientRect();
-let initial_ball_coord = ball.getBoundingClientRect();
-    // console.log("initial_ball", initial_ball_coord)
-let ball_coord = initial_ball_coord;
-    // console.log("ball_coord", ball_coord)
-let board_coord = board.getBoundingClientRect();
-let paddle_common = 
-    document.querySelector('.paddle').getBoundingClientRect();
-//Math floor gives largest integer value that is <= to a number: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/floor
-//https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dx
-//Math random returns a floating-point. number 
-let x = Math.floor(Math.random() * 5) + 4;
-let y = Math.floor(Math.random() * 5) + 4;
-let xd = Math.floor(Math.random() * 3);
-let yg = Math.floor(Math.random() * 3);
-// add event listener tricky but these sites helped:
-//https://developer.mozilla.org/en-US/docs/Web/API/Document/keydown_event
-//https://teamtreehouse.com/community/dont-understand-the-meaning-of-functione
-//
-                // Sounds for the STRETCH
-                // let hit = new Audio();
-                // let wall = new Audio();
-                // let userScore = new Audio();
-                // let comScore = new Audio();
-
-                // hit.src = "hit.wav";
-                // wall.src = "wall.wav";
-                // userScore.src = "userscore.wav";
-                // comScore.src = "compscore.wav";
+window.addEventListener("keydown", arrowmove);
+const canvas = document.getElementById("board")
+const ctx = canvas.getContext('2d');
+let gameLoopInterval = setInterval(gameLoop, 60);
+let score = 0;
 
 
 
-document.addEventListener('keydown', (e) => {
-  if (e.key == 'Enter') {
-//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
-//http://write.flossmanuals.net/learn-javascript-with-phaser/changing-game-states/
-    gameState = gameState == 'start' ? 'play' : 'start';
-    if (gameState == 'play') {
-      message.innerHTML = 'Get Ready Go!';
-      message.style.left = 32 + 'vw';
-//request animation: https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame
-      window.requestAnimationFrame(() => {
-        gx = Math.floor(Math.random() * 1) + 2;
-        gy = Math.floor(Math.random() * 1) + 2;
-        xg = Math.floor(Math.random() * 1);
-        yg = Math.floor(Math.random() * 1);
-        moveBall(gx, gy, xg, yg);
-        console.log("ball_coord", ball_coord)
-      });
-    }
-  }
-// https://developer.mozilla.org/en-US/docs/Games/Anatomy
-  ball.style.top = ball_coord.top + gy * (yg == 0 ? -1 : 1) + 'gx';
-  ball.style.left = ball_coord.left + gx * (xg == 0 ? -1 : 1) + 'gx';
-  ball_coord = ball.getBoundingClientRect();
-  requestAnimationFrame(() => {
-    moveBall(gx, gy, xg, yg);
-  });
-
-
-if (gameState == 'play') {
-  if (e.key == 'a') {
-    paddle1.style.top =
-      Math.max(
-        board_coord.top,
-        paddle1_coord.top - window.innerHeight * 0.06
-      ) + 'gx';
-    paddle1_coord = paddle1.getBoundingClientRect();
-  }
-  if (e.key == 'z') {
-    paddle1.style.top =
-      Math.min(
-        board_coord.bottom - paddle_common.height,
-        paddle1_coord.top + window.innerHeight * 0.1
-      ) + 'gx';
-    paddle1_coord = paddle1.getBoundingClientRect();
-  }
-
-  if (e.key == 'ArrowUp') {
-    paddle2.style.top =
-      Math.max(
-        board_coord.top,
-        paddle2_coord.top - window.innerHeight * 0.15
-      ) + 'gx';
-    paddle2_coord = paddle2.getBoundingClientRect();
-  }
-  if (e.key == 'ArrowDown') {
-    paddle2.style.top =
-      Math.min(
-        board_coord.bottom - paddle_common.height,
-        paddle2_coord.top + window.innerHeight * 0.15
-      ) + 'gx';
-    paddle2_coord = paddle2.getBoundingClientRect();
-  }
+//rectangle paddles
+function drawRect(x, y, w, h, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, w, h);
 }
-});
 
-function moveBall(gx, gy, xg, yg) {
-if (ball_coord.top <= board_coord.top) {
-  yg = 3;
+//draw ugly ball
+function drawBall(x, y, w, h, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, w, h);
 }
-if (ball_coord.bottom >= board_coord.bottom) {
-  yg = 8;
+//paddles 
+const player1 = {
+      x: canvas.width -25,
+      y: (canvas.height - 100)/2,
+      w: 18,
+      h: 100,
+      color: "white",
+      draw: () => {
+            ctx.fillStyle = player1.color;
+            ctx.fillRect(player1.x, player1.y, player1.w, player1.h); 
+      }
 }
-if (
-  ball_coord.left <= paddle1_coord.right &&
-  ball_coord.top >= paddle1_coord.top &&
-  ball_coord.bottom <= paddle1_coord.bottom
-) {
-  xg = 1;
-  gx = Math.floor(Math.random() * 4) + 3;
-  gy = Math.floor(Math.random() * 4) + 3;
+const computer = {
+      x: 5,
+      y: (canvas.height -100)/2,
+      w: 18,
+      h: 100,
+      color: "white",
+      draw: () => {
+            ctx.fillStyle = computer.color;
+            ctx.fillRect(computer.x, computer.y, computer.w, computer.h); 
+      }
 }
-if (
-  ball_coord.right >= paddle2_coord.left &&
-  ball_coord.top >= paddle2_coord.top &&
-  ball_coord.bottom <= paddle2_coord.bottom
-) {
-  xg = 0;
-  gx = Math.floor(Math.random() * 4) + 3;
-  gy = Math.floor(Math.random() * 4) + 3;
-}
-if (
-  ball_coord.left <= board_coord.left ||
-  ball_coord.right >= board_coord.right
-) {
-  //adding the score up and changing score display
-  if (ball_coord.left <= board_coord.left) {
-    score2.innerHTML = +score2.innerHTML + 1;
-  } else {
-    score1.innerHTML = +score1.innerHTML + 1;
-  }
-  gameState = 'play';
 
-  ball_coord = initial_ball_coord;
-  ball.style = initial_ball.style;
-  //message to play game
-  message.innerHTML = 'Press Enter to Start';
-  message.style.left = 38 + 'vw';
-  return;
+// ugly ball
+const ball = {
+      x: 0,
+      y: (canvas.height - 100)/2,
+      w: 10,
+      h: 10,
+      velocityX:8,
+      velocityY: 8,
+      color: "white",
+      draw: () => {
+            //update ball x position
+            ball.x = ball.x + ball.velocityX;
+            //check if ball is out of bounds
+            if(ball.x > canvas.width || ball.x< 0) {
+                  ball.velocityX = -ball.velocityX //if ball is out of bounds invert velocity
+            }
+            //update ball y position
+            ball.y = ball.y + ball.velocityY;
+            //check if ball is out of bounds y
+            if(ball.y > canvas.height || ball.y< 0) {
+                  ball.velocityY = -ball.velocityY //if ball is out of bounds invert velocity
+            }
+                  
+            ctx.fillStyle = ball.color;
+            ctx.fillRect(ball.x, ball.y, ball.w, ball.h); 
+            
+      }
+
+
+}
+const net = {
+      x: (canvas.width -2)/2,
+      y: 0,
+      h: 600,
+      w: 2,
+      color: "white",
+}
+
+//net
+// console.log(net.x);
+
+function gameLoop() {
+      //console.log("hello")
+// game loop needs to clear canvas
+      ctx.clearRect (0, 0, canvas.width, canvas.height)
+//move ball and draw (update game data)
+
+//re-draw new locations
+      ctx.fillStyle = net.color;
+      ctx.fillRect(net.x, net.y, net.w, net.h);
+      ball.draw();
+      player1.draw();
+      computer.draw();
+      computerScoreBoard.draw();
+      playerScoreBoard.draw();
+      collisionDetection();
+} 
+//computerScoreboard
+const computerScoreBoard = {
+      x: 200,
+      y: 40,
+      w: 30,
+      h: 30,
+      color: "white",
+      draw: () => {
+      ctx.font = "30px Arial";
+      ctx.fillText(+score, 200, 40);
+      // ctx.textAlign = "center";
+      }
+}
+//playerScoreboard
+const playerScoreBoard = {
+      x: 600,
+      y: 40,
+      w: 30,
+      h: 30,
+      color: "white",
+      draw: () => {
+      ctx.font = "30px Arial";
+      ctx.fillText(+score, 600, 40);
+      // ctx.textAlign = "center";
+      }
+}
+
+//collision detection from: 
+//https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
+
+function collisionDetection() {
+      if (player1.x < ball.x + ball.w &&
+            player1.x + player1.w > ball.x &&
+            player1.y < ball.y + ball.h &&
+            player1.y + player1.h > ball.y) {
+                  
+                  console.log("collision player")
+            } 
+            if (computer.x < ball.x + ball.w &&
+                  computer.x + computer.w > ball.x &&
+                  computer.y < ball.y + ball.h &&
+                  computer.y + computer.h > ball.y) {
+                        
+                        console.log("collision computer")
+                  } 
+                  
+}
+                    
+                
+            
+// animate paddles
+//player1 
+   
+
+//arrowmove
+function arrowmove (event) {
+      console.log(event.keyCode)
+      if(event.keyCode == 40) {
+            console.log('keydown')
+            player1.y = player1.y +20
+      } 
+      if(event.keyCode == 38) {
+            player1.y = player1.y -20
+      }
+
+      if(event.keyCode == 83) {
+            console.log('keydown')
+            computer.y = computer.y +20
+      } 
+      if(event.keyCode == 87) {
+            computer.y = computer.y -20
+      }
+      
+      
 }

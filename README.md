@@ -4,10 +4,10 @@ Since my JS skills are still quite minimal, I decided to re-create the game that
 
 I plan on being able to use mostly HTML, CSS and JS for this. Definitely looking forward to the process ad my JS skills are quite minimal poor at this stage.
 
-Wire frames seem pretty simple for this game. one page interactive game. simple border, game score at top of page. two moving paddles that are controlled by your keyboard, and a display message upon winning or loosing the game.
+MVP: Wire frames seem pretty simple for this game. one page interactive game. simple border, game score at top of page for each player. two moving paddles that are controlled by your keyboard, and a fuctional scoreboard.
 
-goal is to be able to get the paddles fully fuctional including a paddle that is "computer" as player and one that is controlled by up and down arrows on keyboard.
+goal is to be able to get the paddles fully fuctional controlled by up and down arrows on keyboard. computer will be controlled by w= up s= down.
 
-a strech goal would be to be able to incorporate a fully functional music option button so users can choose if they to get "in the mood".
+a strech goal would be to be able to incorporate a fully functional music option 
 
 most of my roadblocks are going to come from actual JS coding which is super intimidating to me.
