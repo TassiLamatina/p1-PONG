@@ -2,7 +2,10 @@ window.addEventListener("keydown", arrowmove);
 const canvas = document.getElementById("board")
 const ctx = canvas.getContext('2d');
 let gameLoopInterval = setInterval(gameLoop, 60);
-let score = 0;
+let scorePlayer1 = 0;
+let scoreComputer = 0;
+
+//start game button
 
 
 
@@ -43,19 +46,25 @@ const computer = {
 
 // ugly ball
 const ball = {
-      x: 0,
-      y: (canvas.height - 100)/2,
+      x: 400,
+      y: 300,
       w: 10,
       h: 10,
-      velocityX:8,
-      velocityY: 8,
+      velocityX: 7,
+      velocityY: 7,
       color: "white",
       draw: () => {
             //update ball x position
             ball.x = ball.x + ball.velocityX;
             //check if ball is out of bounds
-            if(ball.x > canvas.width || ball.x< 0) {
-                  ball.velocityX = -ball.velocityX //if ball is out of bounds invert velocity
+            if(ball.x > canvas.width) {
+              scorePlayer1 += 1
+              reset();
+                  // ball.velocityX = -ball.velocityX //if ball is out of bounds invert velocity
+            }
+            else if(ball.x <= 0) {
+              scoreComputer += 1
+              reset();
             }
             //update ball y position
             ball.y = ball.y + ball.velocityY;
@@ -97,6 +106,9 @@ function gameLoop() {
       computerScoreBoard.draw();
       playerScoreBoard.draw();
       collisionDetection();
+      //reset ball
+     
+        
 } 
 //computerScoreboard
 const computerScoreBoard = {
@@ -107,7 +119,7 @@ const computerScoreBoard = {
       color: "white",
       draw: () => {
       ctx.font = "30px Arial";
-      ctx.fillText(+score, 200, 40);
+      ctx.fillText(+scoreComputer, 200, 40);
       // ctx.textAlign = "center";
       }
 }
@@ -120,9 +132,10 @@ const playerScoreBoard = {
       color: "white",
       draw: () => {
       ctx.font = "30px Arial";
-      ctx.fillText(+score, 600, 40);
+      ctx.fillText(+scorePlayer1, 600, 40);
       // ctx.textAlign = "center";
       }
+
 }
 
 //collision detection from: 
@@ -133,25 +146,43 @@ function collisionDetection() {
             player1.x + player1.w > ball.x &&
             player1.y < ball.y + ball.h &&
             player1.y + player1.h > ball.y) {
+              ball.velocityX = -ball.velocityX
+              ball.velocityY = -ball.velocityY
                   
-                  console.log("collision player")
+                  // console.log("collision player")
             } 
             if (computer.x < ball.x + ball.w &&
                   computer.x + computer.w > ball.x &&
                   computer.y < ball.y + ball.h &&
                   computer.y + computer.h > ball.y) {
+                    ball.velocityX = -ball.velocityX
+                    ball.velocityY = -ball.velocityY
                         
-                        console.log("collision computer")
+                        // console.log("collision computer")
                   } 
-                  
+     // if ball hit on right wall
+   if (ball.x + ball.radius >= canvas.width) {
+    // play scoreSound
+
+    // then user scored 1 point
+    player1.scorePlayer1 += 1;
+    reset();
+  }
+
+  // if ball hit on left wall
+  if (ball.x - ball.radius <= 0) {
+    // play scoreSound
+
+    // then ai scored 1 point
+    computer.scoreComputer += 1;
+    reset();
+  }
 }
-                    
+       
+//update fuction
                 
             
-// animate paddles
-//player1 
-   
-
+// animate paddles with keyboard
 //arrowmove
 function arrowmove (event) {
       console.log(event.keyCode)
@@ -172,4 +203,16 @@ function arrowmove (event) {
       }
       
       
+}
+
+// reset the ball
+function reset() {
+  // reset ball's value to older values
+  ball.x = canvas.width / 2;
+  ball.y = canvas.height / 2;
+  ball.speed = 7;
+
+  // changes the direction of ball
+  ball.velocityX = -ball.velocityX;
+  ball.velocityY = -ball.velocityY;
 }
