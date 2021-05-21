@@ -187,15 +187,28 @@ function collisionDetection() {
 function arrowmove (event) {
       console.log(event.keyCode)
       if(event.keyCode == 40) {
-            console.log('keydown')
+            console.log(player1.y)
+            if(player1.y >= 510) {
+              // console.log("bottom hit")
+              player1.y = player1.y
+              // event.disabled = true
+            } else {
             player1.y = player1.y +20
       } 
+    }
       if(event.keyCode == 38) {
-            player1.y = player1.y -20
+        // console.log(player1.y)
+        if(player1.y <= 0) {
+          // console.log("top hit")
+          
+          player1.y = player1.y
+        } else { 
+        player1.y = player1.y -20
       }
+    }
 
       if(event.keyCode == 83) {
-            console.log('keydown')
+            // console.log('keydown')
             computer.y = computer.y +20
       } 
       if(event.keyCode == 87) {
